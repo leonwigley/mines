@@ -1,34 +1,31 @@
 package render
 
 import (
-	"embed"
 	"html/template"
 	"io"
 )
 
-//go:embed *
-var files embed.FS
+const templateDir = "app/views/"
 
 var (
-	index = parse("index.html")
-	about = parse("about.html")
+	index = parse(templateDir+"layout.html", templateDir+"index.html")
+	about = parse(templateDir+"layout.html", templateDir+"about.html")
 )
 
 func Index(w io.Writer, data map[string]interface{}, partial string) error {
 	if partial == "" {
-		partial = "layout.html"
+		partial = "layout"
 	}
 	return index.ExecuteTemplate(w, partial, data)
 }
 
 func About(w io.Writer, data map[string]interface{}, partial string) error {
 	if partial == "" {
-		partial = "layout.html"
+		partial = "layout"
 	}
 	return about.ExecuteTemplate(w, partial, data)
 }
 
-func parse(file string) *template.Template {
-	return template.Must(
-		template.New("layout.html").ParseFS(files, "layout.html", file))
+func parse(files ...string) *template.Template {
+	return template.Must(template.ParseFiles(files...))
 }

@@ -28,7 +28,7 @@ clean:
 	@rm -f bin/mines
 
 # Live Reload
-watch: tailwind-install
+dev: tailwind-install
 	@echo "Watching..."
 	@if command -v air > /dev/null; then \
 		bin/tools/tailwindcss -i app/views/css/input.css -o public/css/style.css --watch & \
